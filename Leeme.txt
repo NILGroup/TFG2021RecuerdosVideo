@@ -1,0 +1,14 @@
+
+
+
+Otros procesadores de Audio To Text:
+
+	- Kaldi
+	- vosk
+	- León
+	- Wav2letter
+	- Annyang
+
+https://waliamrinal.medium.com/top-5-speech-recognition-open-source-projects-and-libraries-with-most-stars-on-github-d705408b834
+
+https://www.slanglabs.in/blog/automatic-speech-recognition-in-python-programs
