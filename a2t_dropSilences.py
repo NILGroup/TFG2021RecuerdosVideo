@@ -1,94 +1,72 @@
 # importing libraries
-import speech_recognition as sr
 import os
-import shutil
+from datetime import datetime
 
+import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 
+formato = "%H:%M:%S"
 
-# a function that splits the audio file into chunks
-# and applies speech recognition
-def silence_based_conversion(path="speech.wav"):
-    # open the audio file stored in
-    # the local system as a wav file.
 
-    audio = AudioSegment.from_wav("wavs_prueba/spPrue2.wav")
+def transcribe(fichero = "GH010191.wav"):
 
-    # open a file where we will concatenate
-    # and store the recognized text
-    fh = open("recognized_SphinxTroceado.txt", "w+")
+    print('--- Proceso Separar por Silencios ---')
 
-    # split track where silence is 0.5 seconds
-    # or more and get chunks
-    chunks = split_on_silence(audio, min_silence_len=1000, silence_thresh=-40, keep_silence=1000)
+    # fichero donde se almacenará la transcripción
+    fh = open("transcripcion.txt", "w+")
 
-    # create a directory to store the audio chunks.
+    audio = AudioSegment.from_wav(fichero)
+    chunks, not_silence_ranges = split_on_silence(audio, min_silence_len = 1000, silence_thresh = -40, keep_silence = 200)
+
+    # Directorio donde se almacena los audios troceados
     try:
-        os.mkdir('audio_troceado_sp')
+        os.mkdir('audio_troceado')
+        os.chdir('audio_troceado')
     except(FileExistsError):
         pass
 
-    # move into the directory to
-    # store the audio files.
-    os.chdir('audio_troceado_sp')
+    print('\33[32m' + datetime.now().strftime(formato) + ' START MAIN' + '\033[0m')
+    print('--- Proceso Transcribir ---')
 
     i = 1
-    # process each chunk
+    tiempo = 0
+
     for chunk in chunks:
 
-        # Create 0.5 seconds silence chunk
-        chunk_silent = AudioSegment.silent(500)
-
+        chunk_silent = AudioSegment.silent(600)
         audio_chunk = chunk_silent + chunk + chunk_silent
-
-        # export audio chunk and save it in
-        # the current directory.
-        print("saving parte{0}.wav".format(i))
-        # specify the bitrate to be 192 k
-        audio_chunk.export("./parte{0}.wav".format(i), bitrate='192k', format="wav")
-
-        # the name of the newly created chunk
+        # print("Guardando parte{0}.wav".format(i))
+        audio_chunk.export("./parte{0}.wav".format(i), bitrate = '192k', format = "wav")
         filename = 'parte' + str(i) + '.wav'
+        # print("Procesando parte " + str(i) + ".  Duracion = {:.2f}".format(chunk.duration_seconds) + " segundos. Inicio: {:.2f}".format(tiempo) + " Final: {:.2f}".format(tiempo + chunk.duration_seconds))
 
-        print("Processing parte " + str(i))
+        print("Procesando parte " + str(i) + ".  Duracion = {:.2f}".format(chunk.duration_seconds) +
+              " segundos. Inicio: {:.2f}".format(not_silence_ranges[i - 1][0] / 1000) +
+              " Final: {:.2f}".format(not_silence_ranges[i - 1][1] / 1000))
 
-        # get the name of the newly created chunk
-        # in the AUDIO_FILE variable for later use.
-        file = filename
-
-        # create a speech recognition object
         r = sr.Recognizer()
+        file = filename
 
         # recognize the chunk
         with sr.AudioFile(file) as source:
-            # remove this if it is not working
-            # correctly.
-            r.adjust_for_ambient_noise(source)
+            # r.adjust_for_ambient_noise(source)
             audio_listened = r.record(source)
 
         try:
-            # try converting it to text
-            rec = r.recognize_sphinx(audio_listened, language="es")
-            # write the output to the file.
-            fh.write(rec + ". ")
-
-        # catch any errors.
+            rec = r.recognize_google(audio_listened, language = "es")
+            fh.write("Parte " + str(i))
+            fh.write(" ({:.2f}) ".format(not_silence_ranges[i - 1][0] / 1000))
+            fh.write(rec + ". " + '\n')
         except sr.UnknownValueError:
-            print("Could not understand audio")
-
+            print('\33[33m' + 'Could not understand audio' + '\033[0m')
         except sr.RequestError as e:
-            print("Could not request results. check your internet connection")
+            print('\33[31m' + 'Could not request results. check your internet connection' + '\033[0m')
 
+        tiempo += chunk.duration_seconds
         i += 1
 
+    fh.write(str(i) + " Partes" + '\n')
+
+    fh.close()
     os.chdir('..')
-
-
-if __name__ == '__main__':
-    print('START')
-
-    if os.path.exists('audio_troceado'):
-        shutil.rmtree('audio_troceado')
-
-    silence_based_conversion()

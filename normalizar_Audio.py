@@ -1,16 +1,16 @@
 
 from pydub import AudioSegment, effects, scipy_effects
 
-speechNormalizado = AudioSegment.from_wav('speech.wav')
 
-#audio = effects.normalize(audio)
+def normalizar(nombre):
 
-#speechNormalizado = audio.band_pass_filter(300, 3000)
+    print('--- Proceso Normalizar ---')
+    a1 = AudioSegment.from_wav(nombre + ".wav")
+    a1 = scipy_effects.band_pass_filter(a1, 300, 2500)
+    a1 = a1.set_channels(1)
+    a1 = effects.normalize(a1)
+    a1 += 2
 
-speechNormalizado = scipy_effects.band_pass_filter(speechNormalizado, 300, 2500, 5)
-
-speechNormalizado = speechNormalizado + 10
-
-speechNormalizado = speechNormalizado.set_channels(1)
-
-speechNormalizado.export('speechEfectsScipy2500.wav', format='wav')
+    fichero = nombre + "Norm" + ".wav"
+    a1.export(fichero, format = 'wav')
+    return fichero
