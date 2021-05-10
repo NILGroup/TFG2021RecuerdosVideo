@@ -19,9 +19,6 @@ if __name__ == '__main__':
     # --- Proceso video2audio ---
     v2a.v2a(nombre)
 
-    if os.path.exists('audio_troceado'):
-        shutil.rmtree('audio_troceado')
-
     # --- Proceso Normalizar ---
     print('\33[32m' + datetime.now().strftime(formato) + '\033[0m')
     fichero = normAudio.normalizar(nombre)

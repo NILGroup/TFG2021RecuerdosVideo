@@ -1,5 +1,6 @@
 # importing libraries
 import os
+import shutil
 from datetime import datetime
 
 import speech_recognition as sr
@@ -14,15 +15,20 @@ def transcribe(fichero = "GH010191.wav"):
     print('--- Proceso Separar por Silencios ---')
 
     # fichero donde se almacenará la transcripción
-    fh = open("transcripcion.txt", "w+")
+    filename = "./filesTranscriptions/transcrip_" + fichero.split(".")[0] + ".txt"
+    fh = open(filename, "w+", encoding="ISO-8859-1")
 
     audio = AudioSegment.from_wav(fichero)
     chunks, not_silence_ranges = split_on_silence(audio, min_silence_len = 1000, silence_thresh = -40, keep_silence = 200)
 
     # Directorio donde se almacena los audios troceados
     try:
+        if os.path.exists('audio_troceado'):
+            shutil.rmtree('audio_troceado')
+        
         os.mkdir('audio_troceado')
         os.chdir('audio_troceado')
+        
     except(FileExistsError):
         pass
 
