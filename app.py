@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.config['carpetaInputs'] = "./filesInput"
 @app.route('/')
 def index():
+    # print('Hola de nuevo')
     return render_template('index.html')
 
 
@@ -23,7 +24,7 @@ def subir_fichero():
 
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug = True, port = 80)
 
 '''
 @app.route('/user/<userId>')
