@@ -5,6 +5,8 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 app.config['carpetaInputs'] = "./filesInput"
+
+
 @app.route('/')
 def index():
     # print('Hola de nuevo')
