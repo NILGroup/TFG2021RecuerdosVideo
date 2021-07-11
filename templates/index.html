@@ -3,14 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Index Prueba</title>
+     <link rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css"/>
+
+    <link rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/basic.min.css"/>
+
+    <script type="application/javascript"
+     src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.js">
+    </script>
 </head>
 <body>
-
-    <h1>Subir fichero de Audio en formato .wav</h1>
-    <form action="/subirFichero" method="POST" enctype="multipart/form-data">
-        <input type="file" name="archivo">
-        <input type="submit">
+    <h1>Subir vídeo</h1>
+    <form method="POST" action='/subirFichero' class="dropzone dz-clickable"
+      id="dropper" enctype="multipart/form-data">
     </form>
-
+    <script>
+        Dropzone.options.dropper = {
+            paramName: 'file',
+            chunking: true,
+            forceChunking: true,
+            url: '/subirFichero',
+            parallelChunkUploads: true,
+            timeout: 1200000,
+            maxFilesize: 4000, // megabytes
+            chunkSize: 200000000 // bytes
+        }
+    </script>
 </body>
 </html>

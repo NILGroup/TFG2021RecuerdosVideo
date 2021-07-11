@@ -1,0 +1,1 @@
+for %%a in ("C:\Users\sayan\Proyectos\PycharmProjects\TFG\output\entrevistas\*.json") do python "C:\Users\sayan\Proyectos\PycharmProjects\TFG\post_procesar_transcripcion.py" "C:\Users\sayan\Proyectos\PycharmProjects\TFG\output\entrevistas\%%~na.json" "True"
