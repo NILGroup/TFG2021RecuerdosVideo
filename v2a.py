@@ -1,9 +1,11 @@
 from moviepy.editor import *
 
 
-def v2a(nombre):
+def v2a(nombre, extension):
+    
     print('--- Proceso video2audio ---')
-    video = VideoFileClip(nombre + ".mp4")
+    
+    video = VideoFileClip(nombre + extension)
     audio = video.audio
     audio.write_audiofile(nombre + ".wav")
     return nombre + ".wav"

@@ -23,8 +23,6 @@ def transcribe(fichero = "GH010191.wav"):
     filename = f"./filesTranscriptions/({st},{msl})transcrip_ComChunck_" + fichero.split(".")[0] + ".txt"
     fh = open(filename, "w+", encoding = "ISO-8859-1")
 
-    fh.write(f'\n \t min_silence_len = {msl}, silence_thresh = {st}, keep_silence = {ks}, ComChunck \n\n')
-
     audio = AudioSegment.from_wav("./audios/" + fichero)
     chunks, not_silence_ranges = split_on_silence(audio, min_silence_len = msl,
                                                   silence_thresh = st,
@@ -41,10 +39,11 @@ def transcribe(fichero = "GH010191.wav"):
     except(FileExistsError):
         pass
 
-    print('\33[32m' + datetime.now().strftime(formato) + ' START MAIN' + '\033[0m')
+    print('\33[32m' + datetime.now().strftime(formato) + '\033[0m')
     print('--- Proceso Transcribir ---')
     
     i = 1
+    
     # Transcripcion de audios troceados
     for chunk in chunks:
     
@@ -57,10 +56,6 @@ def transcribe(fichero = "GH010191.wav"):
         audio_chunk.export("./parte{0}.wav".format(i), bitrate = '320k', format = "wav")
         filename = 'parte' + str(i) + '.wav'
 
-        print("Procesando parte " + str(i) + ".  Duracion = {:.2f}".format(chunk.duration_seconds) +
-              " segundos. Inicio: " + str(timedelta(seconds = not_silence_ranges[i - 1][0] / 1000)) +
-              "  | |  Final: " + str(timedelta(seconds = not_silence_ranges[i - 1][1] / 1000)))
-
         r = sr.Recognizer()
         file = filename
         
@@ -70,8 +65,6 @@ def transcribe(fichero = "GH010191.wav"):
         
         try:
             rec = r.recognize_google(audio_listened, language = "es-ES")
-            #fh.write("Parte " + str(i))
-            #fh.write(" (" + str(timedelta(seconds = not_silence_ranges[i - 1][0] / 1000)) + ") ")
             fh.write(rec[0].upper() + rec[1:] + ". " + '\n')
         except sr.UnknownValueError:
             print('\33[33m' + 'Could not understand audio' + '\033[0m')
@@ -79,8 +72,6 @@ def transcribe(fichero = "GH010191.wav"):
             print('\33[31m' + 'Could not request results. check your internet connection' + '\033[0m')
             
         i += 1
-    
-    fh.write('\n' + str(i) + " Partes" + '\n')
     
     fh.close()
     os.chdir('..')
