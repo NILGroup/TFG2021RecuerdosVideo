@@ -4,7 +4,6 @@ certifi==2020.12.5
 chardet==4.0.0
 configparser==4.0.2
 contextlib2==0.6.0.post1
-cryptography==1.7.1
 distlib==0.3.1
 enum34==1.1.10
 ffmpeg==1.4
@@ -24,9 +23,7 @@ pathlib2==2.3.5
 protobuf==3.15.8
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
-pycrypto==2.6.1
 pydub==0.24.1
-pygobject==3.27.0
 pyparsing==2.4.7
 PySocks==1.7.1
 pytz==2021.1

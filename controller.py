@@ -2,6 +2,7 @@
 import os
 import json
 import shutil
+from pathlib import Path
 from datetime import datetime
 # import normalizar_Audio as normAudio
 import services.cloud_storage as cloud_storage
@@ -20,7 +21,7 @@ def process_video(file):
 
         base = os.path.basename(source_file)
         name = os.path.splitext(base)[0]
-        output_name = name + "output.json"
+        output_name = name + "_output.json"
         try:
             # --- Proceso Normalizar ---
             # print('\33[32m' + datetime.now().strftime(formato) + '\033[0m')
@@ -31,7 +32,8 @@ def process_video(file):
             print('\33[32m' + datetime.now().strftime(formato) + '\033[0m')
 
             storage_uri = cloud_storage.upload_blob(source_file, base)
-            result = speech_to_text.transcribe(storage_uri, "output\\" + output_name)
+
+            result = speech_to_text.transcribe(storage_uri, Path(__file__).parent / "output" /output_name)
         except Exception as e:
             print("Ocurrio un error inesperado:\n")
             print(e)

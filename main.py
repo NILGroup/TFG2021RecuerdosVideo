@@ -4,7 +4,7 @@ import shutil
 from datetime import datetime
 
 import a2t_dropSilences as a2t
-import normalizar_Audio as normAudio
+import normalizar_audio as normAudio
 import v2a as v2a
 
 

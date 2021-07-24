@@ -65,15 +65,19 @@ def subir_fichero():
         completed = len(chucks[dz_uuid]) == total_chunks
     # Concat all the files into the final file when all are downloaded
     if completed:
-        with open(storage_path / f"{dz_uuid}_{secure_filename(file.filename)}", "wb") as f:
+        uploaded_file = storage_path / f"{dz_uuid}_{secure_filename(file.filename)}"
+        with open(uploaded_file, "wb") as f:
             for file_number in range(total_chunks):
                 f.write((save_dir / str(file_number)).read_bytes())
-        print(f"{file.filename} has been uploaded")
         shutil.rmtree(save_dir)
-        input_file = Path(storage_path) / file.filename
-        audio_path = video2audio(input_file, converted_path)
-        result = controller.process_video(audio_path)
-        shutil.rmtree(converted_path)
+        print(f"{file.filename} has been uploaded")
+        input_file = uploaded_file
+        try:
+            audio_path = video2audio(input_file, converted_path)
+            result = controller.process_video(audio_path)
+        finally:
+            os.remove(audio_path)
+            os.remove(input_file)
     #save el video en el directorio
     #newpath = os.path.join(app.config['carpetaInputs'], file.filename)
     #file.save(newpath)
@@ -82,7 +86,8 @@ def subir_fichero():
     #filename = "./filesTranscriptions/transcrip_" + file.filename.split(".")[0] + ".txt"
     #manejador = open(filename, "r")
     #texto = manejador.read()
-    return make_response((result, 200))
+    #return make_response((result, 200))
+    return result
 
 
 if __name__ == '__main__':
