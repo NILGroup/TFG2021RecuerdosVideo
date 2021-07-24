@@ -50,7 +50,7 @@ def transcribe(fichero = "GH010191.wav"):
         
         chunk_silent = AudioSegment.silent(600)
         audio_chunk = chunk_silent + chunk + chunk_silent
-        audio_chunk.export("./parte{0}.wav".format(i), bitrate = '320k', format = "wav")
+        audio_chunk.export("./parte{0}.wav".format(i), format = "wav")
         filename = 'parte' + str(i) + '.wav'
 
         r = sr.Recognizer()
