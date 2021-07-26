@@ -9,4 +9,5 @@ def v2a(source_file, output_path):
     audio = video.audio
     newpath = Path(output_path) / source_file.stem
     audio.write_audiofile(str(newpath.with_suffix(".wav")))
+    video.close()
     return newpath.with_suffix(".wav")

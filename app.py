@@ -22,10 +22,11 @@ chucks = defaultdict(list)
 chunk_path = Path(__file__).parent / "chunks"
 storage_path = Path(__file__).parent / "input"
 converted_path = Path(__file__).parent / "converted"
+output_path = Path(__file__).parent / "output"
 chunk_path.mkdir(exist_ok=True, parents=True)
 storage_path.mkdir(exist_ok=True, parents=True)
 converted_path.mkdir(exist_ok=True, parents=True)
-
+output_path.mkdir(exist_ok=True, parents=True)
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -69,6 +70,7 @@ def subir_fichero():
         with open(uploaded_file, "wb") as f:
             for file_number in range(total_chunks):
                 f.write((save_dir / str(file_number)).read_bytes())
+            f.close()
         shutil.rmtree(save_dir)
         print(f"{file.filename} has been uploaded")
         input_file = uploaded_file
