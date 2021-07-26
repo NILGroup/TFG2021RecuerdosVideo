@@ -10,7 +10,6 @@ from pathlib import Path
 from requests import HTTPError
 
 import controller
-import a2t_dropSilences as a2
 from werkzeug.utils import secure_filename
 
 print("")
