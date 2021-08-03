@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,23 +12,19 @@
     <script type="application/javascript"
      src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.js">
     </script>
+
+    <script type="application/javascript"
+            src="{{ url_for('static', filename='js/dropzone.js') }}">
+    </script>
 </head>
 <body>
     <h1>Subir vídeo</h1>
     <form method="POST" action='/subirFichero' class="dropzone dz-clickable"
       id="dropper" enctype="multipart/form-data">
     </form>
-    <script>
-        Dropzone.options.dropper = {
-            paramName: 'file',
-            chunking: true,
-            forceChunking: true,
-            url: '/subirFichero',
-            parallelChunkUploads: true,
-            timeout: 1200000,
-            maxFilesize: 4000, // megabytes
-            chunkSize: 200000000 // bytes
-        }
-    </script>
+    <div id="results">
+        <div id="summary" style="white-space: pre-line;"></div>
+        <div id="transcript" style="white-space: pre-line;"></div>
+    </div>
 </body>
 </html>

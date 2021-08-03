@@ -1,6 +1,4 @@
 from moviepy.editor import *
-import tempfile
-import shutil
 from pathlib import Path
 
 def v2a(source_file, output_path):
