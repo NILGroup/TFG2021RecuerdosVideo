@@ -1,30 +1,108 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Index Prueba</title>
-     <link rel="stylesheet"
-     href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css"/>
+    <title>TFG2021 RecuerdosVideo</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
     <link rel="stylesheet"
-     href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/basic.min.css"/>
+          href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.css"/>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/basic.min.css"/>
 
     <script type="application/javascript"
-     src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.js">
+            src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/min/dropzone.min.js">
     </script>
 
     <script type="application/javascript"
             src="{{ url_for('static', filename='js/dropzone.js') }}">
     </script>
+
+        <script type="application/javascript"
+            src="{{ url_for('static', filename='js/bootstrap.min.js') }}">
+    </script>
+
 </head>
+
 <body>
-    <h1>Subir vídeo</h1>
-    <form method="POST" action='/subirFichero' class="dropzone dz-clickable"
-      id="dropper" enctype="multipart/form-data">
-    </form>
-    <div id="results">
-        <div id="summary" style="white-space: pre-line;"></div>
-        <div id="transcript" style="white-space: pre-line;"></div>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark">
+            <h2 class="p-3">
+                Generación de recuerdos a partir de vídeos utilizando redes neuronales sequence to sequence
+            </h2>
+        </nav>
+    </header>
+
+    <div class="container pt-4">
+        <h3>Descripción</h3>
+        <p></p>
+        <h6>Autores: Daniel Alcázar Muñoz y Francisco Javier Lozano Hernández </h6>
+        <h6>Director: Alberto Diaz Esteban</h6>
+    </div>
+
+    <div class="container main-div">
+      <div class="row all-info py-3">
+        <div class="col-xs-12 col-md-5 info">
+            <h3>Recomendaciones</h3>
+            <p>Una buena calidad del audio es indispensable para conseguir los mejores resultados posibles.</p>
+            <ul>
+                <li>Coloca el micrófono situado lo más cerca posible de los hablantes.</li>
+                <li>El ruido de fondo y los ecos excesivos pueden reducir la exactitud y precisión en el proceso de transcripción.</li>
+                <li>Si varias personas hablan al mismo tiempo o en diferentes volúmenes, esto puede interpretarse como ruido de fondo, incluso ignorarse.</li>
+            </ul>
+            <h3>Subir vídeo</h3>
+
+
+            <form method="POST" action='/subirFichero' enctype="multipart/form-data">
+                <div class="py-4">
+                    <p>Selecciona el modo de transcipción:</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="modoTrancript" value="silencios" id="separacionSilencios" checked>
+                        <label class="form-check-label" for="separacionSilencios">
+                            Separación por silencios
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="modoTrancript" value="hablantes" id="separacionHablantes">
+                        <label class="form-check-label" for="separacionHablantes">
+                            Separación por hablantes
+                        </label>
+                    </div>
+                </div>
+
+                <input type="text" id ="firstname" name ="firstname" />
+                <input type="text" id ="lastname" name ="lastname" />
+                <div class="dropzone dz-clickable" id="dropper"></div>
+                <button type="submit" class="btn btn-primary" id="submit-all"> Subir Video </button>
+            </form>
+
+        </div>
+
+
+        <div class="col-xs-12 col-md-1 none"></div>
+        <div id="results" class="col-xs-12 col-md-6">
+            <h3>Resultados obtenidos</h3>
+
+            <div id="resultados" style="visibility: hidden;">
+                <div id="error" class="alert alert-danger" role="alert" style="visibility: hidden;"></div>
+
+                <h5>Resumen</h5>
+                <div class="form-group py-2">
+                    <textarea class="form-control" id="summary" readonly></textarea>
+                </div>
+                <h5>Transcripcion</h5>
+                <div class="form-group py-1">
+                    <textarea class="form-control" id="transcript" readonly></textarea>
+                </div>
+            </div>
+
+        </div>
+      </div>
     </div>
 </body>
+
 </html>

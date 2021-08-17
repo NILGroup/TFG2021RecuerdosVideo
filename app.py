@@ -8,6 +8,7 @@ from collections import defaultdict
 import shutil
 from pathlib import Path
 from requests import HTTPError
+from datetime import datetime
 
 import controller
 from werkzeug.utils import secure_filename
@@ -23,10 +24,14 @@ chunk_path = Path(__file__).parent / "chunks"
 storage_path = Path(__file__).parent / "input"
 converted_path = Path(__file__).parent / "converted"
 output_path = Path(__file__).parent / "output"
+
+# Creacion de directorios si no existen
 chunk_path.mkdir(exist_ok=True, parents=True)
 storage_path.mkdir(exist_ok=True, parents=True)
 converted_path.mkdir(exist_ok=True, parents=True)
 output_path.mkdir(exist_ok=True, parents=True)
+
+formato = "%H:%M:%S"
 
 
 @app.route('/')
@@ -39,6 +44,9 @@ def subir_fichero():
     try:
         result = ""
         file = request.files.get("file")
+        #modeTrancript = request.form.get('modoTrancript')
+        modeTrancript = ""
+
         if not file:
             raise HTTPError(status=400, body="No file provided")
         dz_uuid = request.form["dzuuid"]
@@ -64,6 +72,7 @@ def subir_fichero():
             completed = len(chucks[dz_uuid]) == total_chunks
         # Concat all the files into the final file when all are downloaded
         if completed:
+            print('\33[32m' + 'JUNTAR FICHERO' + '\033[0m')
             uploaded_file = storage_path / f"{dz_uuid}_{secure_filename(file.filename)}"
             with open(uploaded_file, "wb") as f:
                 for file_number in range(total_chunks):
@@ -73,13 +82,21 @@ def subir_fichero():
             logging.info(f"{file.filename} has been uploaded")
             input_file = uploaded_file
             try:
+                hourIni = datetime.now()
+                print('\33[32m' + hourIni.strftime(formato) + ' START MAIN' + '\033[0m')
+                
                 audio_path = video2audio(input_file, converted_path)
-                result = controller.process_audio(audio_path)
+                result = controller.process_audio(audio_path, modeTrancript)
+                
+                print('\33[32m' + datetime.now().strftime(formato) + ' FINISH MAIN' + '\033[0m')
+                print('\33[32m' + "Duracion --> " + str(datetime.now() - hourIni) + '\033[0m')
+                
             finally:
                 if audio_path.exists():
                     os.remove(audio_path)
                 if input_file.exists():
                     os.remove(input_file)
+            print('\33[32m' + datetime.now().strftime(formato) + ' TODO CORRECTO' + '\033[0m')
         return make_response(jsonify(result), 200)
     except Exception as e:
         logging.exception(e)

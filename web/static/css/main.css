@@ -1,0 +1,19 @@
+
+nav {
+    background-color: #e30e26;
+    color: white;
+}
+
+textarea {
+    overflow-y: scroll;
+    height: 100px;
+    resize: vertical;
+}
+
+#transcript{
+    height: 300px;
+}
+
+.dropzone{
+    border-radius: .25rem;
+}

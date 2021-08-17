@@ -15,14 +15,27 @@ Dropzone.options.dropper = {
           this.removeFile(this.files[0]);
         }
       });
+
       this.on('success', function(file){
-        var response = JSON.parse(file.xhr.response)
-        if(typeof response["summary"] !== 'undefined' || typeof response["transcript"] !== 'undefined'){
-          document.getElementById("summary").innerHTML = response["summary"]
-          document.getElementById("transcript").innerHTML = response["transcript"]
-        }else{
-            //Poner algún tipo de mensaje de error bonito en la página con CSS y eso
-            //A veces se devuelve strings vacias en la respuesta, en ese caso decir qeu se vuelva a intentar y que hubo un error inesperado.
+
+        var response = JSON.parse(file.xhr.response);
+        document.getElementById("resultados").style.visibility = 'visible';
+        let error = "";
+
+        if(typeof response["summary"] !== 'undefined')
+            document.getElementById("summary").innerHTML = response["summary"];
+        else
+            error = "Hubo un problema al generar el resumen.";
+
+        if(typeof response["transcript"] !== 'undefined')
+            document.getElementById("transcript").innerHTML = response["transcript"];
+        else
+            error += "<br>Hubo un problema al generar la transcripcion.";
+
+        if (error !== ""){
+            ele = document.getElementById("error");
+            ele.style.visibility = 'visible';
+            ele.innerHTML = "ERROR INESPERADO. Pruebe a intentarlo de nuevo. <br>" + error;
         }
 
       })
