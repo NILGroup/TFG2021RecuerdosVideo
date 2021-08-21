@@ -17,7 +17,7 @@ formato = "%H:%M:%S"
 def process_audio(file, modeTrancript):
     
     source_file = file
-    result = ""
+    result = {}
     
     if os.path.exists(source_file):
         base = os.path.basename(source_file)
@@ -37,8 +37,6 @@ def process_audio(file, modeTrancript):
 
             # Generar resumen
             summary = model.generate_summary(transcript.replace("\n", ""))
-            print(transcript)
-            print(summary)
             result = {"summary": summary, "transcript": transcript}
             
         except Exception as e:

@@ -35,7 +35,6 @@ def transcribe(fichero):
     except(FileExistsError):
         pass
     
-    print('\33[32m' + datetime.now().strftime(formato) + '\033[0m')
     print('--- Proceso Transcribir por Silencios ---')
     
     i = 1
@@ -58,13 +57,16 @@ def transcribe(fichero):
         
         try:
             rec = r.recognize_google(audio_listened, language = "es-ES")
-            transcripcion += rec[0].upper() + rec[1:] + ". " + '\n'
+            transcripcion += rec[0].upper() + rec[1:] + ". "
         except sr.UnknownValueError:
-            print('\33[33m' + 'No se pudo entender el audio' + '\033[0m')
+            print('\33[33m' + 'No se pudo entender el audio ' + str(i) + '\033[0m')
         except sr.RequestError as e:
             print('\33[31m' + 'Request Error. Comprueba la conexión a internet' + '\033[0m')
         
         i += 1
     
     os.chdir('..')
+    if os.path.exists('audio_troceado'):
+        shutil.rmtree('audio_troceado')
+        
     return transcripcion

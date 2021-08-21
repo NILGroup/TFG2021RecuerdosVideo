@@ -1,13 +1,14 @@
 
 nav {
     background-color: #e30e26;
+    text-align: center;
     color: white;
 }
 
 textarea {
     overflow-y: scroll;
     height: 100px;
-    resize: vertical;
+    resize: both;
 }
 
 #transcript{
@@ -16,4 +17,13 @@ textarea {
 
 .dropzone{
     border-radius: .25rem;
+    text-align: center;
+}
+
+.dz-filename{
+    padding: 5px;
+}
+
+.alert{
+    text-align: left;
 }

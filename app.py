@@ -13,10 +13,11 @@ from datetime import datetime
 import controller
 from werkzeug.utils import secure_filename
 
+
 app = Flask(__name__,
-            static_url_path='',
-            static_folder='web/static',
-            template_folder='web/templates')
+            static_url_path = '',
+            static_folder = 'web/static',
+            template_folder = 'web/templates')
 
 lock = Lock()
 chucks = defaultdict(list)
@@ -26,10 +27,10 @@ converted_path = Path(__file__).parent / "converted"
 output_path = Path(__file__).parent / "output"
 
 # Creacion de directorios si no existen
-chunk_path.mkdir(exist_ok=True, parents=True)
-storage_path.mkdir(exist_ok=True, parents=True)
-converted_path.mkdir(exist_ok=True, parents=True)
-output_path.mkdir(exist_ok=True, parents=True)
+chunk_path.mkdir(exist_ok = True, parents = True)
+storage_path.mkdir(exist_ok = True, parents = True)
+converted_path.mkdir(exist_ok = True, parents = True)
+output_path.mkdir(exist_ok = True, parents = True)
 
 formato = "%H:%M:%S"
 
@@ -39,30 +40,29 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/subirFichero', methods=['POST'])
+@app.route('/subirFichero', methods = ['POST'])
 def subir_fichero():
     try:
         result = ""
         file = request.files.get("file")
-        #modeTrancript = request.form.get('modoTrancript')
-        modeTrancript = ""
-
+        modeTrancript = request.form.get('modoTrancript')
+        
         if not file:
-            raise HTTPError(status=400, body="No file provided")
+            raise HTTPError(status = 400, body = "No file provided")
         dz_uuid = request.form["dzuuid"]
         # Chunked download
         try:
             current_chunk = int(request.form["dzchunkindex"])
             total_chunks = int(request.form["dztotalchunkcount"])
         except KeyError as err:
-            raise HTTPError(status=400, body=f"Not all required fields supplied, missing {err}")
+            raise HTTPError(status = 400, body = f"Not all required fields supplied, missing {err}")
         except ValueError:
-            raise HTTPError(status=400, body=f"Values provided were not in expected format")
-
+            raise HTTPError(status = 400, body = f"Values provided were not in expected format")
+        
         # Create a new directory for this file in the chunks dir, using the UUID as the folder name
         save_dir = chunk_path / dz_uuid
         if not save_dir.exists():
-            save_dir.mkdir(exist_ok=True, parents=True)
+            save_dir.mkdir(exist_ok = True, parents = True)
         # Save the individual chunk
         with open(save_dir / str(request.form["dzchunkindex"]), "wb") as f:
             file.save(f)
@@ -90,18 +90,23 @@ def subir_fichero():
                 
                 print('\33[32m' + datetime.now().strftime(formato) + ' FINISH MAIN' + '\033[0m')
                 print('\33[32m' + "Duracion --> " + str(datetime.now() - hourIni) + '\033[0m')
-                
+            
             finally:
                 if audio_path.exists():
                     os.remove(audio_path)
                 if input_file.exists():
                     os.remove(input_file)
             print('\33[32m' + datetime.now().strftime(formato) + ' TODO CORRECTO' + '\033[0m')
-        return make_response(jsonify(result), 200)
+
+            #resp = make_response("")
+            #resp.set_cookie('coockRes', 'username_1')
+            
+            return make_response(jsonify(result), 200)
+        return make_response(jsonify(result), 206)
     except Exception as e:
         logging.exception(e)
         return make_response(messages.ERR_UNEXPECTED, 500)
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host="127.0.0.1", port=8080)
+    app.run(debug = True, host = "127.0.0.1", port = 8080)
