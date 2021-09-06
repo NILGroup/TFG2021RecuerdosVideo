@@ -34,6 +34,7 @@ output_path.mkdir(exist_ok = True, parents = True)
 
 formato = "%H:%M:%S"
 
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 @app.route('/')
 def index():

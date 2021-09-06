@@ -47,6 +47,6 @@ def process_audio(file, modeTrancript):
                 cloud_storage.delete_blob(base)
 
     else:
-        print("El archivo de entrada no existe")
+        print(messages.ERR_FILE)
 
     return result

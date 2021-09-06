@@ -5,15 +5,14 @@ import os
 
 def deserialize_transcript(array, salto):
     hablante = array[0]["speaker tag"]
-    texto = ""
-    
+    texto = str(hablante) + ": "
+    salto_char= ""
+    if salto: salto_char=".\n"
+
     for elem in array:
         if hablante != elem["speaker tag"]:
             word = elem["word"]
-            if salto:
-                texto += ".\n" + word[0].upper() + word[1:]
-            else:
-                texto += "." + word[0].upper() + word[1:]
+            texto += salto_char + str(elem["speaker tag"]) + ": " + word[0].upper() + word[1:]
             hablante = elem["speaker tag"]
         else:
             texto += " " + elem["word"]
