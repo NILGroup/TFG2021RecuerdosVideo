@@ -45,6 +45,8 @@ def index():
 def subir_fichero():
     try:
         result = ""
+        audio_path= ""
+        input_file= ""
         file = request.files.get("file")
         modeTrancript = request.form.get('modoTrancript')
         
@@ -93,9 +95,9 @@ def subir_fichero():
                 print('\33[32m' + "Duracion --> " + str(datetime.now() - hourIni) + '\033[0m')
             
             finally:
-                if audio_path.exists():
+                if audio_path != "" and audio_path.exists():
                     os.remove(audio_path)
-                if input_file.exists():
+                if audio_path != "" and input_file.exists():
                     os.remove(input_file)
             print('\33[32m' + datetime.now().strftime(formato) + ' TODO CORRECTO' + '\033[0m')
 
@@ -103,10 +105,11 @@ def subir_fichero():
             #resp.set_cookie('coockRes', 'username_1')
             
             return make_response(jsonify(result), 200)
-        return make_response(jsonify(result), 206)
     except Exception as e:
         logging.exception(e)
-        return make_response(messages.ERR_UNEXPECTED, 500)
+        return make_response(messages.ERR_UNEXPECTED.value, 500)
+
+    return make_response(jsonify(result), 206)
 
 
 if __name__ == '__main__':
