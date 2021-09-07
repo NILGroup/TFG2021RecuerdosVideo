@@ -15,9 +15,9 @@ from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__,
-            static_url_path = '',
-            static_folder = 'web/static',
-            template_folder = 'web/templates')
+            static_url_path = "",
+            static_folder = "web/static",
+            template_folder = "web/templates")
 
 lock = Lock()
 chucks = defaultdict(list)
@@ -34,7 +34,7 @@ output_path.mkdir(exist_ok = True, parents = True)
 
 formato = "%H:%M:%S"
 
-
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -84,7 +84,7 @@ def subir_fichero():
             try:
                 hourIni = datetime.now()
                 print('\33[32m' + hourIni.strftime(formato) + ' START MAIN' + '\033[0m')
-                
+                audio_path=""
                 audio_path = video2audio(input_file, converted_path)
                 result = controller.process_audio(audio_path, modeTrancript)
                 
@@ -100,13 +100,12 @@ def subir_fichero():
 
             #resp = make_response("")
             #resp.set_cookie('coockRes', 'username_1')
-            
             return make_response(jsonify(result), 200)
-        return make_response(jsonify(result), 206)
     except Exception as e:
         logging.exception(e)
-        return make_response(messages.ERR_UNEXPECTED, 500)
+        return make_response(messages.ERR_UNEXPECTED.value, 500)
+    return make_response(jsonify(result), 206)
 
 
 if __name__ == '__main__':
-    app.run(debug = True, host = "127.0.0.1", port = 8080)
+    app.run(debug = True)
