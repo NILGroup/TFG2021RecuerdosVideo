@@ -3,7 +3,7 @@ Dropzone.options.dropper = {
     autoProcessQueue: false,
     chunking: true,
     forceChunking: true,
-    url: '/tfg/2021/video/subirFichero',
+    url: '/subirFichero',
     parallelChunkUploads: true,
     timeout: 0,
     maxFilesize: 4000, // megabytes
