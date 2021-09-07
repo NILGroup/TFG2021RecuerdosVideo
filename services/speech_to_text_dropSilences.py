@@ -1,8 +1,6 @@
 # importing libraries
 import os
 import shutil
-from datetime import datetime
-from datetime import timedelta
 
 import speech_recognition as sr
 from pydub import AudioSegment

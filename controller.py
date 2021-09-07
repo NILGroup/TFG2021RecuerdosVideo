@@ -40,13 +40,13 @@ def process_audio(file, modeTrancript):
             result = {"summary": summary, "transcript": transcript}
             
         except Exception as e:
-            print(messages.ERR_UNEXPECTED)
+            print(messages.ERR_UNEXPECTED.value)
             print(e)
         finally:
             if modeTrancript == "hablantes":
                 cloud_storage.delete_blob(base)
 
     else:
-        print("El archivo de entrada no existe")
+        print(messages.ERR_FILE.value)
 
     return result
