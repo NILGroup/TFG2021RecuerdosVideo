@@ -52,7 +52,7 @@ Dropzone.options.dropper = {
         });
 
         this.on("uploadprogress", function(file, progress,bytesSent){
-            if(progress==100){
+            if(progress==100 && !$('#load-container').length){
                  $("<div id='load-container'>" + "<div class=\"loader\"></div>" +
                      "<div class=\"alert alert-primary\">El proceso puede tardar varios minutos. Por favor, espere hasta que aparezcan los resultados.</div>\n"
                  +"</div>")
