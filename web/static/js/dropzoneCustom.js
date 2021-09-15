@@ -109,6 +109,7 @@ Dropzone.options.dropper = {
                 ele.innerHTML = "ERROR INESPERADO. Pruebe a intentarlo de nuevo. <br>" + error;
             }
 
+            //Se eliminan las cookies utilizadas para los resultados
             document.cookie = "ckSummary=; max-age=0";
             document.cookie = "ckTranscript=; max-age=0";
 
