@@ -41,11 +41,15 @@
         </nav>
     </header>
 
+
     <div class="container pt-4">
-        <p class="intro">Página web creada para el TFG "Desarrollo de un sistema para la generación de recuerdos utilizando redes neuronales sequence to sequence" del curso 2021/2021 de la Universidad Complutense de Madrid. El código y la documentación se encuentran en <a href="https://github.com/NILGroup/TFG2021RecuerdosVideo">GitHub</a>.
+        <p class="intro">Página web creada para el TFG "Desarrollo de un sistema para la generación de recuerdos utilizando redes neuronales sequence to sequence" del curso 2021/2021 de la Universidad Complutense de Madrid. El código y la documentación se encuentran en <a href="https://github.com/NILGroup/TFG2021RecuerdosVideo">GitHub</a>
+        <!--
         <h6>Autores: Daniel Alcázar Muñoz y Francisco Javier Lozano Hernández </h6>
         <h6>Director: Alberto Diaz Esteban</h6>
+        -->
     </div>
+
 
     <div class="container main-div">
       <div class="row all-info py-3">
@@ -59,24 +63,45 @@
             </ul>
             </div>
 
-            <h3>Subir vídeo</h3>
+
 
 
             <form method="POST" action='/subirFichero' enctype="multipart/form-data">
                 <div class="py-1">
-                    <p>Selecciona el modo de transcripción:</p>
+                    <p>Selecciona las opciones:</p>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="modoTrancript" value="silencios" id="separacionSilencios" checked>
+                        <input class="form-check-input" onclick="disableButton('resumirSeparado')" type="radio" name="modoTrancript" value="silencios" id="separacionSilencios" checked>
                         <label class="form-check-label" for="separacionSilencios">
-                            Separación por silencios
+                            Transcribir con separación por silencios
                         </label>
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="modoTrancript" value="hablantes" id="separacionHablantes">
+                        <input class="form-check-input" onclick="enableButton('resumirSeparado')" type="radio" name="modoTrancript" value="hablantes" id="separacionHablantes" >
                         <label class="form-check-label" for="separacionHablantes">
-                            Separación por hablantes
+                            Transcribir con separación por hablantes
                         </label>
+                    </div>
+                    <hr/>
+                    <div class="form-check">
+                         <input class="form-check-input" type="checkbox" name="divideBySpeaker" id="resumirSeparado" disabled>
+                        <label class="form-check-label" for="resumirSeparado">
+                             Resumir hablantes por separado
+                        </label>
+                    </div>
+                    <hr/>
+                    <div class="form-check">
+                         <input class="form-check-input" type="checkbox" name="divideBySegments" id="segmentar">
+                        <label class="form-check-label" for="segmentar">
+                             Resumir por segmentos
+                        </label>
+                    </div>
+                    <div>
+                          <label class="form-check-label" for="tamano">
+                             Tamaño del segmento:
+                        </label>
+                        <INPUT TYPE="NUMBER" MIN="3" MAX="30" STEP="1" VALUE="6" SIZE="6" id="tamano" name="sizeSegments">
+
                     </div>
                 </div>
 
@@ -85,13 +110,10 @@
             </form>
 
         </div>
-
-
         <div class="col-xs-12 col-md-1 none"></div>
         <div id="results" class="col-xs-12 col-md-6">
             <h3 style="margin-bottom: 30px">Resultado</h3>
             <div id="resultados">
-
             </div>
         </div>
       </div>

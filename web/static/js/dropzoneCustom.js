@@ -46,9 +46,14 @@ Dropzone.options.dropper = {
 
         this.on("sending", function(data, xhr, formData) {
             $(":submit").prop("disabled", true);
+            //$("input").prop("disabled", true);
             $("#resultados").empty()
 
             formData.append("modoTrancript", jQuery("input[name='modoTrancript']:checked").val());
+            formData.append("divideBySpeaker", jQuery("input[name='divideBySpeaker']:not(:disabled)").val());
+            formData.append("divideBySegments", jQuery("input[name='divideBySegments']:checked").val());
+            formData.append("sizeSegments", jQuery("input[name='sizeSegments']").val());
+
         });
 
         this.on("uploadprogress", function(file, progress,bytesSent){

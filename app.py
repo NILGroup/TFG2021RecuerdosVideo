@@ -49,6 +49,19 @@ def subir_fichero():
         input_file= ""
         file = request.files.get("file")
         modeTrancript = request.form.get('modoTrancript')
+        divideBySpeaker = request.form.get('divideBySpeaker')
+        divideBySegments = request.form.get('divideBySegments')
+        sizeSegments = int(request.form.get('sizeSegments'))
+
+        if divideBySegments == 'on':
+            divideBySegments=True
+        else:
+            divideBySegments= False
+
+        if divideBySpeaker == 'on':
+            divideBySpeaker=True
+        else:
+            divideBySpeaker = False
         
         if not file:
             raise HTTPError(status = 400, body = "No file provided")
@@ -89,8 +102,8 @@ def subir_fichero():
                 print('\33[32m' + hourIni.strftime(formato) + ' START MAIN' + '\033[0m')
                 audio_path=""
                 audio_path = video2audio(input_file, converted_path)
-                result = controller.process_audio(audio_path, modeTrancript)
-                
+                result = controller.process_audio(audio_path, modeTrancript, divideBySpeaker, divideBySegments, sizeSegments)
+
                 print('\33[32m' + datetime.now().strftime(formato) + ' FINISH MAIN' + '\033[0m')
                 print('\33[32m' + "Duracion --> " + str(datetime.now() - hourIni) + '\033[0m')
             

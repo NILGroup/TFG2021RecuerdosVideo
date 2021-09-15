@@ -7,3 +7,11 @@ function copyToClipboard(id){
   navigator.clipboard.writeText(copyText.value);
 
 }
+
+function disableButton(id){
+  document.getElementById(id).disabled = true
+}
+
+function enableButton(id){
+  document.getElementById(id).disabled = false
+}
