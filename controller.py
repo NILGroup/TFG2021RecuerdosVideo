@@ -7,6 +7,7 @@ import normalizar_audio
 import services.cloud_storage as cloud_storage
 import services.speech_to_text as speech_to_text
 import services.speech_to_text_dropSilences as s2t_dropSilence
+import services.email as em
 from messages import messages
 from post_procesar_transcripcion import deserialize_transcript
 
@@ -14,7 +15,7 @@ from post_procesar_transcripcion import deserialize_transcript
 formato = "%H:%M:%S"
 
 
-def process_audio(file, transcriptMode, divide_by_speaker_option, divide_by_segments_option, size_segments):
+def process_audio(file, transcriptMode, divide_by_speaker_option, divide_by_segments_option, size_segments, email):
     
     source_file = file
     result = {}
@@ -41,6 +42,11 @@ def process_audio(file, transcriptMode, divide_by_speaker_option, divide_by_segm
             # Generar resumen
             summary = model.summarize(transcript.replace("\n", ""), diarize, divide_by_speaker_option, divide_by_segments_option, size_segments)
             result = {"summary": summary, "transcript": transcript}
+            
+            # Enviar correo con resultados
+            if email:
+                em.send_email(email, transcript.replace(". ", ".\n"), summary)
+            
             
         except Exception as e:
             print(messages.ERR_UNEXPECTED.value)

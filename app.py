@@ -52,6 +52,7 @@ def subir_fichero():
         divideBySpeaker = request.form.get('divideBySpeaker')
         divideBySegments = request.form.get('divideBySegments')
         sizeSegments = int(request.form.get('sizeSegments'))
+        email = request.form.get('email')
 
         if divideBySegments == 'on':
             divideBySegments=True
@@ -102,7 +103,7 @@ def subir_fichero():
                 print('\33[32m' + hourIni.strftime(formato) + ' START MAIN' + '\033[0m')
                 audio_path=""
                 audio_path = video2audio(input_file, converted_path)
-                result = controller.process_audio(audio_path, modeTrancript, divideBySpeaker, divideBySegments, sizeSegments)
+                result = controller.process_audio(audio_path, modeTrancript, divideBySpeaker, divideBySegments, sizeSegments, email)
 
                 print('\33[32m' + datetime.now().strftime(formato) + ' FINISH MAIN' + '\033[0m')
                 print('\33[32m' + "Duracion --> " + str(datetime.now() - hourIni) + '\033[0m')
@@ -114,8 +115,6 @@ def subir_fichero():
                     os.remove(input_file)
             print('\33[32m' + datetime.now().strftime(formato) + ' TODO CORRECTO' + '\033[0m')
 
-            #resp = make_response("")
-            #resp.set_cookie('coockRes', 'username_1')
             return make_response(jsonify(result), 200)
     except Exception as e:
         logging.exception(e)

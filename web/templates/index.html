@@ -63,9 +63,6 @@
             </ul>
             </div>
 
-
-
-
             <form method="POST" action='/subirFichero' enctype="multipart/form-data">
                 <div class="py-1">
                     <p>Selecciona las opciones:</p>
@@ -97,14 +94,18 @@
                         </label>
                     </div>
                     <div>
-                          <label class="form-check-label" for="tamano">
+                         <label class="form-check-label" for="tamano">
                              Tamaño del segmento:
                         </label>
-                        <INPUT TYPE="NUMBER" MIN="3" MAX="30" STEP="1" VALUE="6" SIZE="6" id="tamano" name="sizeSegments">
-
+                        <input type="number" min="3" max="30" step="1" value="6" size="6" id="tamano" name="sizeSegments">
                     </div>
-                </div>
-
+                    <hr/>
+                    <div>
+                        <p>Introduce un correo al que se le enviarán los resultados:</p>
+                        <label>(Opcional)</label>
+                        <input type="email" name="email" placeholder="example@gmail.com">
+                    </div>
+            </div>
                 <div class="dropzone dz-clickable my-3 pb-3" id="dropper"></div>
                 <button type="submit" class="btn btn-primary py-1" id="submit-all"> Subir Video </button>
             </form>

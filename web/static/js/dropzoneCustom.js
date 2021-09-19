@@ -53,6 +53,7 @@ Dropzone.options.dropper = {
             formData.append("divideBySpeaker", jQuery("input[name='divideBySpeaker']:not(:disabled)").val());
             formData.append("divideBySegments", jQuery("input[name='divideBySegments']:checked").val());
             formData.append("sizeSegments", jQuery("input[name='sizeSegments']").val());
+            formData.append("email", jQuery("input[name='email']").val());
 
         });
 
