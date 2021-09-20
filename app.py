@@ -21,11 +21,11 @@ app = Flask(__name__,
 
 lock = Lock()
 chucks = defaultdict(list)
-chunk_video_path = Path(__file__).parent / "chunks_video"
-input_video_path = Path(__file__).parent / "input_video"
-normalized_audio_path = Path(__file__).parent / "normalized_audio"
-output_email_path = Path(__file__).parent / "output_email"
-chunks_audio_path = Path(__file__).parent / "chunks_audio"
+chunk_video_path = Path(__file__).parent / "temp" /"chunks_video"
+input_video_path = Path(__file__).parent / "temp" / "input_video"
+normalized_audio_path = Path(__file__).parent / "temp"/ "normalized_audio"
+output_email_path = Path(__file__).parent / "temp"/"output_email"
+chunks_audio_path = Path(__file__).parent / "temp" /"chunks_audio"
 
 # Creacion de directorios si no existen
 chunk_video_path.mkdir(exist_ok = True, parents = True)

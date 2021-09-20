@@ -10,7 +10,7 @@ import services.speech_to_text_dropSilences as s2t_dropSilence
 import services.send_email as sm
 from messages import messages
 from post_procesar_transcripcion import deserialize_transcript
-
+from app import chunks_audio_path, output_email_path
 
 formato = "%H:%M:%S"
 
@@ -36,7 +36,7 @@ def process_audio(audio_path, transcriptMode, divide_by_speaker_option, divide_b
                 result_json_array = speech_to_text.transcribe(storage_uri)
                 transcript = deserialize_transcript(result_json_array, True)
             else:
-                transcript = s2t_dropSilence.transcribe(audio_path, Path(__file__).parent / "chunks_audio" / name)
+                transcript = s2t_dropSilence.transcribe(audio_path, chunks_audio_path / name)
             
             # Generar resumen
             summary = model.summarize(transcript.replace("\n", ""), diarize, divide_by_speaker_option, divide_by_segments_option, size_segments)
@@ -44,7 +44,7 @@ def process_audio(audio_path, transcriptMode, divide_by_speaker_option, divide_b
             
             # Enviar correo con resultados
             if email:
-                sm.send_email(email, transcript.replace(". ", ".\n"), summary, Path(__file__).parent / "output_email" / name)
+                sm.send_email(email, transcript.replace(". ", ".\n"), summary, output_email_path / name)
         
         except Exception as e:
             print(messages.ERR_UNEXPECTED.value)
