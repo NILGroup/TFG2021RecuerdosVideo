@@ -1,8 +1,8 @@
 import os
-from messages import messages
+from constants.messages import messages
 import logging
 
-from paths import temp_path, chunk_video_path, input_video_path, normalized_audio_path, output_email_path, \
+from constants.paths import temp_path, chunk_video_path, input_video_path, normalized_audio_path, output_email_path, \
     chunks_audio_path
 from video2audio import v2a as video2audio
 from flask import Flask, render_template, request, make_response, jsonify

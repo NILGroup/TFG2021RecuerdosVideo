@@ -1,6 +1,5 @@
 # importing libraries
 import os
-from pathlib import Path
 
 import model
 import normalizar_audio
@@ -8,9 +7,9 @@ import services.cloud_storage as cloud_storage
 import services.speech_to_text as speech_to_text
 import services.speech_to_text_dropSilences as s2t_dropSilence
 import services.send_email as sm
-from messages import messages
+from constants.messages import messages
 from post_procesar_transcripcion import deserialize_transcript
-from paths import output_email_path, chunks_audio_path
+from constants.paths import output_email_path, chunks_audio_path
 
 formato = "%H:%M:%S"
 
