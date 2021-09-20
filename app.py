@@ -21,16 +21,18 @@ app = Flask(__name__,
 
 lock = Lock()
 chucks = defaultdict(list)
-chunk_path = Path(__file__).parent / "chunks"
-storage_path = Path(__file__).parent / "input"
-converted_path = Path(__file__).parent / "converted"
-output_path = Path(__file__).parent / "output"
+chunk_video_path = Path(__file__).parent / "chunks_video"
+input_video_path = Path(__file__).parent / "input_video"
+normalized_audio_path = Path(__file__).parent / "normalized_audio"
+output_email_path = Path(__file__).parent / "output_email"
+chunks_audio_path = Path(__file__).parent / "chunks_audio"
 
 # Creacion de directorios si no existen
-chunk_path.mkdir(exist_ok = True, parents = True)
-storage_path.mkdir(exist_ok = True, parents = True)
-converted_path.mkdir(exist_ok = True, parents = True)
-output_path.mkdir(exist_ok = True, parents = True)
+chunk_video_path.mkdir(exist_ok = True, parents = True)
+input_video_path.mkdir(exist_ok = True, parents = True)
+normalized_audio_path.mkdir(exist_ok = True, parents = True)
+output_email_path.mkdir(exist_ok = True, parents = True)
+chunks_audio_path.mkdir(exist_ok = True, parents = True)
 
 formato = "%H:%M:%S"
 
@@ -78,7 +80,7 @@ def subir_fichero():
             raise HTTPError(status = 400, body = f"Values provided were not in expected format")
         
         # Create a new directory for this file in the chunks dir, using the UUID as the folder name
-        save_dir = chunk_path / dz_uuid
+        save_dir = chunk_video_path / dz_uuid
         if not save_dir.exists():
             save_dir.mkdir(exist_ok = True, parents = True)
         # Save the individual chunk
@@ -91,7 +93,7 @@ def subir_fichero():
         # Concat all the files into the final file when all are downloaded
         if completed:
             print('\33[32m' + 'JUNTAR FICHERO' + '\033[0m')
-            uploaded_file = storage_path / f"{dz_uuid}_{secure_filename(file.filename)}"
+            uploaded_file = input_video_path / f"{dz_uuid}_{secure_filename(file.filename)}"
             with open(uploaded_file, "wb") as f:
                 for file_number in range(total_chunks):
                     f.write((save_dir / str(file_number)).read_bytes())
@@ -103,7 +105,7 @@ def subir_fichero():
                 hourIni = datetime.now()
                 print('\33[32m' + hourIni.strftime(formato) + ' START MAIN' + '\033[0m')
                 audio_path = ""
-                audio_path = video2audio(input_file, converted_path)
+                audio_path = video2audio(input_file, normalized_audio_path)
                 result = controller.process_audio(audio_path, mode_trancript, divide_by_speaker, divide_by_segments,
                                                   size_segments, email)
                 

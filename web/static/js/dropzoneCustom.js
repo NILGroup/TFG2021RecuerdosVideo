@@ -61,7 +61,7 @@ Dropzone.options.dropper = {
             formData.append("divideBySpeaker", jQuery("input[name='divideBySpeaker']:not(:disabled)").val());
             formData.append("divideBySegments", jQuery("input[name='divideBySegments']:checked").val());
             formData.append("sizeSegments", jQuery("input[name='sizeSegments']").val());
-
+            formData.append("email", jQuery("input[name='email']").val());
         });
 
         this.on("uploadprogress", function(file, progress,bytesSent){
@@ -117,6 +117,7 @@ Dropzone.options.dropper = {
                 ele.innerHTML = "ERROR INESPERADO. Pruebe a intentarlo de nuevo. <br>" + error;
             }
 
+            //Se eliminan las cookies utilizadas para los resultados
             document.cookie = "ckSummary=; max-age=0";
             document.cookie = "ckTranscript=; max-age=0";
 
