@@ -2,13 +2,13 @@
 import os
 
 import model
-import normalizar_audio
+import audio_processor
 import services.cloud_storage as cloud_storage
-import services.speech_to_text as speech_to_text
-import services.speech_to_text_dropSilences as s2t_dropSilence
-import services.send_email as sm
+import services.speech_to_text_google as speech_to_text
+import services.speech_to_text_silences as s2t_dropSilence
+import services.email_sender as sm
 from constants.messages import messages
-from post_procesar_transcripcion import deserialize_transcript
+from transcription_processor import deserialize_transcript
 from constants.paths import output_email_path, chunks_audio_path
 
 formato = "%H:%M:%S"
@@ -28,7 +28,7 @@ def process_audio(audio_path, transcriptMode, divide_by_speaker_option, divide_b
         
         try:
             # Proceso Normalizar
-            normalizar_audio.normalizar(audio_path)
+            audio_processor.normalizar(audio_path)
             # Proceso de Trancribir segun el modo de transcripcion
             if diarize:
                 storage_uri = cloud_storage.upload_blob(audio_path, base)

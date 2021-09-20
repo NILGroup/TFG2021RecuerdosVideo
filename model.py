@@ -1,4 +1,4 @@
-from post_procesar_transcripcion import divide_by_speaker, split_by_sections
+from transcription_processor import divide_by_speaker, split_by_sections
 from summarizer import summarize_array, generate_summary
 
 
