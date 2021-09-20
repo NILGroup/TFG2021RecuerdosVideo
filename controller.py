@@ -26,7 +26,6 @@ def process_audio(file, transcriptMode, divide_by_speaker_option, divide_by_segm
     if os.path.exists(source_file):
         base = os.path.basename(source_file)
         name = os.path.splitext(base)[0]
-        output_name = name + "_output.json"
         
         try:
             # Proceso Normalizar
@@ -34,8 +33,7 @@ def process_audio(file, transcriptMode, divide_by_speaker_option, divide_by_segm
             # Proceso de Trancribir segun el modo de transcripcion
             if diarize:
                 storage_uri = cloud_storage.upload_blob(source_file, base)
-                result_json_array = speech_to_text.transcribe(storage_uri,
-                                                              Path(__file__).parent / "output" / output_name)
+                result_json_array = speech_to_text.transcribe(storage_uri)
                 transcript = deserialize_transcript(result_json_array, True)
             else:
                 transcript = s2t_dropSilence.transcribe(source_file)

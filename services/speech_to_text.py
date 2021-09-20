@@ -11,7 +11,7 @@ from pydub import AudioSegment, effects, scipy_effects
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = api_key
 
 
-def transcribe(storage_uri, destination):
+def transcribe(storage_uri):
     """
     Transcribe long audio file from Cloud Storage using asynchronous speech
     recognition
@@ -45,7 +45,4 @@ Args:
         # data["start_time"] = word_info.start_time
         # data["end_time"] = word_info.end_time
         json_array.append(data)
-    
-    with open(destination, 'w', encoding = "ISO-8859-1") as output:
-        json.dump(json_array, output, ensure_ascii = False)
     return json_array
