@@ -10,7 +10,7 @@ import services.speech_to_text_dropSilences as s2t_dropSilence
 import services.send_email as sm
 from messages import messages
 from post_procesar_transcripcion import deserialize_transcript
-from app import chunks_audio_path, output_email_path
+from paths import output_email_path, chunks_audio_path
 
 formato = "%H:%M:%S"
 

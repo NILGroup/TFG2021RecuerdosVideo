@@ -1,12 +1,14 @@
 import os
 from messages import messages
 import logging
+
+from paths import temp_path, chunk_video_path, input_video_path, normalized_audio_path, output_email_path, \
+    chunks_audio_path
 from video2audio import v2a as video2audio
 from flask import Flask, render_template, request, make_response, jsonify
 from threading import Lock
 from collections import defaultdict
 import shutil
-from pathlib import Path
 from requests import HTTPError
 from datetime import datetime
 
@@ -21,12 +23,6 @@ app = Flask(__name__,
 
 lock = Lock()
 chunks = defaultdict(list)
-temp_path = Path("temp")
-chunk_video_path = Path(__file__).parent / temp_path / "chunks_video"
-input_video_path = Path(__file__).parent / temp_path / "input_video"
-normalized_audio_path = Path(__file__).parent / temp_path / "normalized_audio"
-output_email_path = Path(__file__).parent / temp_path / "output_email"
-chunks_audio_path = Path(__file__).parent / temp_path / "chunks_audio"
 
 # Creacion de directorios si no existen
 temp_path.mkdir(exist_ok = True, parents = True)
