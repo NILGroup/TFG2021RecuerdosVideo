@@ -15,3 +15,12 @@ function disableButton(id){
 function enableButton(id){
   document.getElementById(id).disabled = false
 }
+
+function renderError(errorMsg){
+ $("<div class=\"alert alert-danger\"> " +
+     "<h4 class=\"alert-heading\">Ha ocurrido un error</h4>" +
+     "<p>"+ errorMsg + "</p>"+
+     "<hr>"+
+     "<p class=\"mb-0\">Sí introduciste tu correo es posible que encuentres el resultado ahí en unos minutos.</p>"
+     +"</div>").appendTo("#resultados")
+}

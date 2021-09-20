@@ -10,7 +10,7 @@ Dropzone.options.dropper = {
     maxFilesize: 4000, // megabytes
     chunkSize: 200000000, // bytes
     dictDefaultMessage: "Arrastra el archivo o haz click",
-    dictInvalidFileType: "Solo puedes subir vídeos en formato MP4",
+    dictInvalidFileType: "Solo puedes subir vídeos en formato mp4, mov o avi",
     init: function() {
 
         this.on('dragover', function(event){
@@ -26,8 +26,9 @@ Dropzone.options.dropper = {
         })
 
         this.on('error', function(file, errorMessage, xhr){
+            $(".dz-error-message").remove()
             if (xhr.status === 504) {
-                $(".dz-error-message span").text("Las limitaciones técnicas del servidor provocaron un error por esperar demasiado una respuesta.")
+                renderError("Las limitaciones técnicas del servidor provocaron un error por esperar demasiado una respuesta.")
             }
         })
 
@@ -115,6 +116,7 @@ Dropzone.options.dropper = {
                 ele = document.getElementById("error");
                 ele.style.visibility = 'visible';
                 ele.innerHTML = "ERROR INESPERADO. Pruebe a intentarlo de nuevo. <br>" + error;
+               
             }
 
             //Se eliminan las cookies utilizadas para los resultados
