@@ -20,14 +20,16 @@ app = Flask(__name__,
             template_folder = "web/templates")
 
 lock = Lock()
-chucks = defaultdict(list)
-chunk_video_path = Path(__file__).parent / "temp" /"chunks_video"
-input_video_path = Path(__file__).parent / "temp" / "input_video"
-normalized_audio_path = Path(__file__).parent / "temp"/ "normalized_audio"
-output_email_path = Path(__file__).parent / "temp"/"output_email"
-chunks_audio_path = Path(__file__).parent / "temp" /"chunks_audio"
+chunks = defaultdict(list)
+temp_path = Path("temp")
+chunk_video_path = Path(__file__).parent / temp_path / "chunks_video"
+input_video_path = Path(__file__).parent / temp_path / "input_video"
+normalized_audio_path = Path(__file__).parent / temp_path / "normalized_audio"
+output_email_path = Path(__file__).parent / temp_path / "output_email"
+chunks_audio_path = Path(__file__).parent / temp_path / "chunks_audio"
 
 # Creacion de directorios si no existen
+temp_path.mkdir(exist_ok = True, parents = True)
 chunk_video_path.mkdir(exist_ok = True, parents = True)
 input_video_path.mkdir(exist_ok = True, parents = True)
 normalized_audio_path.mkdir(exist_ok = True, parents = True)
@@ -80,6 +82,7 @@ def subir_fichero():
             raise HTTPError(status = 400, body = f"Values provided were not in expected format")
         
         # Create a new directory for this file in the chunks dir, using the UUID as the folder name
+        # Crea un nuevo directorio por este archivo
         save_dir = chunk_video_path / dz_uuid
         if not save_dir.exists():
             save_dir.mkdir(exist_ok = True, parents = True)
@@ -88,8 +91,8 @@ def subir_fichero():
             file.save(f)
         # See if we have all the chunks downloaded
         with lock:
-            chucks[dz_uuid].append(current_chunk)
-            completed = len(chucks[dz_uuid]) == total_chunks
+            chunks[dz_uuid].append(current_chunk)
+            completed = len(chunks[dz_uuid]) == total_chunks
         # Concat all the files into the final file when all are downloaded
         if completed:
             print('\33[32m' + 'JUNTAR FICHERO' + '\033[0m')
