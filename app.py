@@ -36,6 +36,7 @@ formato = "%H:%M:%S"
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -45,24 +46,24 @@ def index():
 def subir_fichero():
     try:
         result = ""
-        audio_path= ""
-        input_file= ""
+        audio_path = ""
+        input_file = ""
         file = request.files.get("file")
-        modeTrancript = request.form.get('modoTrancript')
-        divideBySpeaker = request.form.get('divideBySpeaker')
-        divideBySegments = request.form.get('divideBySegments')
-        sizeSegments = int(request.form.get('sizeSegments'))
+        mode_trancript = request.form.get('modoTrancript')
+        divide_by_speaker = request.form.get('divideBySpeaker')
+        divide_by_segments = request.form.get('divideBySegments')
+        size_segments = int(request.form.get('sizeSegments'))
         email = request.form.get('email')
-
-        if divideBySegments == 'on':
-            divideBySegments=True
+        
+        if divide_by_segments == 'on':
+            divide_by_segments = True
         else:
-            divideBySegments= False
-
-        if divideBySpeaker == 'on':
-            divideBySpeaker=True
+            divide_by_segments = False
+        
+        if divide_by_speaker == 'on':
+            divide_by_speaker = True
         else:
-            divideBySpeaker = False
+            divide_by_speaker = False
         
         if not file:
             raise HTTPError(status = 400, body = "No file provided")
@@ -101,10 +102,11 @@ def subir_fichero():
             try:
                 hourIni = datetime.now()
                 print('\33[32m' + hourIni.strftime(formato) + ' START MAIN' + '\033[0m')
-                audio_path=""
+                audio_path = ""
                 audio_path = video2audio(input_file, converted_path)
-                result = controller.process_audio(audio_path, modeTrancript, divideBySpeaker, divideBySegments, sizeSegments, email)
-
+                result = controller.process_audio(audio_path, mode_trancript, divide_by_speaker, divide_by_segments,
+                                                  size_segments, email)
+                
                 print('\33[32m' + datetime.now().strftime(formato) + ' FINISH MAIN' + '\033[0m')
                 print('\33[32m' + "Duracion --> " + str(datetime.now() - hourIni) + '\033[0m')
             
@@ -114,12 +116,12 @@ def subir_fichero():
                 if audio_path != "" and input_file.exists():
                     os.remove(input_file)
             print('\33[32m' + datetime.now().strftime(formato) + ' TODO CORRECTO' + '\033[0m')
-
+            
             return make_response(jsonify(result), 200)
     except Exception as e:
         logging.exception(e)
         return make_response(messages.ERR_UNEXPECTED.value, 500)
-
+    
     return make_response(jsonify(result), 206)
 
 
