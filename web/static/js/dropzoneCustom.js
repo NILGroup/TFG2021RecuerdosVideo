@@ -1,5 +1,6 @@
 Dropzone.options.dropper = {
     paramName: 'file',
+    acceptedFiles: '.mp4, .mov, .avi',
     autoProcessQueue: false,
     chunking: true,
     forceChunking: true,
@@ -9,6 +10,7 @@ Dropzone.options.dropper = {
     maxFilesize: 4000, // megabytes
     chunkSize: 200000000, // bytes
     dictDefaultMessage: "Arrastra el archivo o haz click",
+    dictInvalidFileType: "Solo puedes subir vídeos en formato MP4",
     init: function() {
 
         this.on('dragover', function(event){
@@ -21,6 +23,12 @@ Dropzone.options.dropper = {
 
          this.on('drop', function(event){
             document.getElementById('dropper').style.background= 'white'
+        })
+
+        this.on('error', function(file, errorMessage, xhr){
+            if (xhr.status === 504) {
+                $(".dz-error-message span").text("Las limitaciones técnicas del servidor provocaron un error por esperar demasiado una respuesta.")
+            }
         })
 
         this.on('addedfile', function(file) {
@@ -53,7 +61,6 @@ Dropzone.options.dropper = {
             formData.append("divideBySpeaker", jQuery("input[name='divideBySpeaker']:not(:disabled)").val());
             formData.append("divideBySegments", jQuery("input[name='divideBySegments']:checked").val());
             formData.append("sizeSegments", jQuery("input[name='sizeSegments']").val());
-            formData.append("email", jQuery("input[name='email']").val());
 
         });
 
@@ -110,7 +117,6 @@ Dropzone.options.dropper = {
                 ele.innerHTML = "ERROR INESPERADO. Pruebe a intentarlo de nuevo. <br>" + error;
             }
 
-            //Se eliminan las cookies utilizadas para los resultados
             document.cookie = "ckSummary=; max-age=0";
             document.cookie = "ckTranscript=; max-age=0";
 
