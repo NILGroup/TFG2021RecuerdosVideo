@@ -11,10 +11,18 @@ from collections import defaultdict
 import shutil
 from requests import HTTPError
 from datetime import datetime
-
+import sys
 import controller
 from werkzeug.utils import secure_filename
 
+root = logging.getLogger()
+root.setLevel(logging.DEBUG)
+
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+root.addHandler(handler)
 
 app = Flask(__name__,
             static_url_path = "",
@@ -66,16 +74,16 @@ def subir_fichero():
             divide_by_speaker = False
         
         if not file:
-            raise HTTPError(status = 400, body = "No file provided")
+            raise HTTPError(status = 400, body = messages.ERR_FILE_NOT_PROVIDED.value)
         dz_uuid = request.form["dzuuid"]
         # Descarga con chunks
         try:
             current_chunk = int(request.form["dzchunkindex"])
             total_chunks = int(request.form["dztotalchunkcount"])
         except KeyError as err:
-            raise HTTPError(status = 400, body = f"Not all required fields supplied, missing {err}")
+            raise HTTPError(status = 400, body = str(messages.ERR_NOT_ALL_FILES_SUPPLIED.value) + f"{err}")
         except ValueError:
-            raise HTTPError(status = 400, body = f"Values provided were not in expected format")
+            raise HTTPError(status = 400, body = str(messages.ERR_VALUES_FORMAT.value))
 
         # Crea un nuevo directorio para este archivo  en el dir de los chunks, usando el UUID como nombre de carpeta
         save_dir = chunk_video_path / dz_uuid
@@ -90,32 +98,31 @@ def subir_fichero():
             completed = len(chunks[dz_uuid]) == total_chunks
         # Concatenar todos los archivos si se han subido todos
         if completed:
-            print('\33[32m' + 'JUNTAR FICHERO' + '\033[0m')
+            logging.info(messages.INFO_STAGE_JUNTAR.value)
             uploaded_file = input_video_path / f"{dz_uuid}_{secure_filename(file.filename)}"
             with open(uploaded_file, "wb") as f:
                 for file_number in range(total_chunks):
                     f.write((save_dir / str(file_number)).read_bytes())
                 f.close()
+            logging.info(messages.INFO_JUNTAR_SUCC.value)
             shutil.rmtree(save_dir)
-            logging.info(f"{file.filename} has been uploaded")
+            logging.info(f"{file.filename}" + messages.INFO_UPLOADED.value)
             input_file = uploaded_file
             try:
                 hour_ini = datetime.now()
-                print('\33[32m' + hour_ini.strftime(formato) + ' START MAIN' + '\033[0m')
                 audio_path = ""
+                logging.info(messages.INFO_STAGE_VIDEO2AUDIO.value)
                 audio_path = video2audio(input_file, normalized_audio_path)
-                result = controller.process_audio(audio_path, mode_trancript, divide_by_speaker, divide_by_segments,
-                                                  size_segments, email)
-                
-                print('\33[32m' + datetime.now().strftime(formato) + ' FINISH MAIN' + '\033[0m')
-                print('\33[32m' + "Duracion --> " + str(datetime.now() - hour_ini) + '\033[0m')
-            
+                logging.info(messages.INFO_VIDEO2AUDIO_SUCC.value + str(audio_path))
+                logging.info(messages.INFO_STAGE_SUMMARY.value)
+                result = controller.process_audio(audio_path, mode_trancript, divide_by_speaker, divide_by_segments,size_segments, email)
+                logging.info(messages.INFO_SUMMARY_SUCC.value)
             finally:
                 if audio_path != "" and audio_path.exists():
                     os.remove(audio_path)
                 if audio_path != "" and input_file.exists():
                     os.remove(input_file)
-            print('\33[32m' + datetime.now().strftime(formato) + ' TODO CORRECTO' + '\033[0m')
+                logging.info(messages.INFO_CLEAN_SUCC.value)
             
             return make_response(jsonify(result), 200)
     except Exception as e:

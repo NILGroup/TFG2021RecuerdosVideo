@@ -1,18 +1,15 @@
 # importing libraries
 import shutil
-
+from constants.messages import messages
+import logging
 import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 
 
-formato = "%H:%M:%S"
-
-
 def transcribe(source_file, save_dir):
-    
-    print('--- Proceso Separar por Silencios ---')
 
+    logging.info(messages.INFO_STAGE_SPLIT_SILENCES.value)
     transcripcion = ""
     msl = 250
     st = -40
@@ -29,7 +26,7 @@ def transcribe(source_file, save_dir):
         if not save_dir.exists():
             save_dir.mkdir(exist_ok = True, parents = True)
         
-        print('--- Proceso Transcribir por Silencios ---')
+        logging.info(messages.INFO_STAGE_TRANSCRIBE_SILENCES.value)
         
         i = 1
     
@@ -40,7 +37,7 @@ def transcribe(source_file, save_dir):
             audio_chunk = chunk_silent + chunk + chunk_silent
             audio_chunk.export(f"{save_dir}/parte{i}.wav", format = "wav")
             filename = f"{save_dir}/parte{i}.wav"
-            
+
             r = sr.Recognizer()
             file = filename
             
@@ -52,14 +49,14 @@ def transcribe(source_file, save_dir):
                 rec = r.recognize_google(audio_listened, language = "es-ES")
                 transcripcion += rec[0].upper() + rec[1:] + ". "
             except sr.UnknownValueError:
-                print('\33[33m' + 'No se pudo entender el audio ' + str(i) + '\033[0m')
+                logging.info(messages.AUDIO_NOT_UNDERSTAND.value + str(i))
             except sr.RequestError as e:
-                print('\33[31m' + 'Request Error. Comprueba la conexión a internet' + '\033[0m')
-            
+                logging.info(messages.ERR_BAD_INTERNET.value)
+
             i += 1
             
     except FileExistsError:
-        print("No existe el directorio")
+        logging.error(messages.ERR_NO_DIR.value)
     finally:
         shutil.rmtree(save_dir)
     

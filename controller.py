@@ -1,6 +1,6 @@
 # importing libraries
 import os
-
+import logging
 import model
 import audio_processor
 import services.cloud_storage as cloud_storage
@@ -10,8 +10,6 @@ import services.email_sender as sm
 from constants.messages import messages
 from transcription_processor import deserialize_transcript
 from constants.paths import output_email_path, chunks_audio_path
-
-formato = "%H:%M:%S"
 
 
 def process_audio(audio_path, transcriptMode, divide_by_speaker_option, divide_by_segments_option, size_segments, email):
@@ -33,7 +31,7 @@ def process_audio(audio_path, transcriptMode, divide_by_speaker_option, divide_b
             if diarize:
                 storage_uri = cloud_storage.upload_blob(audio_path, base)
                 result_json_array = speech_to_text.transcribe(storage_uri)
-                transcript = deserialize_transcript(result_json_array, True)
+                transcript = deserialize_transcript(result_json_array)
             else:
                 transcript = speech_to_text_silence.transcribe(audio_path, chunks_audio_path / name)
             
@@ -46,13 +44,12 @@ def process_audio(audio_path, transcriptMode, divide_by_speaker_option, divide_b
                 sm.send_email(email, transcript.replace(". ", ".\n"), summary, output_email_path / name)
         
         except Exception as e:
-            print(messages.ERR_UNEXPECTED.value)
-            print(e)
+            logging.error(messages.ERR_UNEXPECTED.value)
         finally:
             if diarize:
                 cloud_storage.delete_blob(base)
                 
     else:
-        print(messages.ERR_FILE.value)
+        logging.error(messages.ERR_FILE.value)
     
     return result

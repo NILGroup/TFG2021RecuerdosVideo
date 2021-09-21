@@ -6,7 +6,8 @@ from google.cloud import speech_v1p1beta1
 
 from resources import api_key
 
-
+from constants.messages import messages
+import logging
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = api_key
 
 
@@ -25,9 +26,8 @@ Args:
             "diarization_speaker_count": 2
     }
     audio = { "uri": storage_uri }
+    logging.info(messages.INFO_GOOGLE_TRANSCRIBE_SPEAKER.value)
     operation = client.long_running_recognize(config = config, audio = audio)
-    print(u"--- Proceso Transcribir por Hablantes ---")
-    
     response = operation.result()
     
     result = response.results[-1]

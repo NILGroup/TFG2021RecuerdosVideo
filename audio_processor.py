@@ -1,8 +1,11 @@
 from pydub import AudioSegment, effects, scipy_effects
+import logging
+from constants.messages import messages
 
-
+##---SOlO USADO AL TESTEAR----##
+## normalización donde la conversación tiene muicha diferencia de volumen ##
+## NO USADO DEBIDO A AUMENTO DE TIEMPO De EJECUCIÓN MUY ALTO##
 def normalizar_compresion(source_file):
-    print('--- Proceso Normalizar ---')
     sound = AudioSegment.from_wav(source_file)
     sound = scipy_effects.band_pass_filter(sound, 200, 3100)
     sound = sound.set_channels(1)
@@ -14,7 +17,7 @@ def normalizar_compresion(source_file):
 
 
 def normalizar(source_file):
-    print('--- Proceso Normalizar ---')
+    logging.info(messages.INFO_STAGE_NORMALIZAR.value)
     sound = AudioSegment.from_wav(source_file)
     sound = scipy_effects.band_pass_filter(sound, 200, 3100)
     sound = sound.set_channels(1)

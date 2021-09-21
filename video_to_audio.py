@@ -3,7 +3,6 @@ from pathlib import Path
 
 
 def v2a(source_file, output_path):
-    print("--- Proceso video2audio ---")
     video = VideoFileClip(str(source_file))
     audio = video.audio
     newpath = Path(output_path) / source_file.stem
