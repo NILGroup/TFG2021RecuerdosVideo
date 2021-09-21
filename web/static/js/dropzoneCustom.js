@@ -58,7 +58,6 @@ Dropzone.options.dropper = {
 
         this.on("sending", function(data, xhr, formData) {
             $(":submit").prop("disabled", true);
-            //$("input").prop("disabled", true);
             $("#resultados").empty()
 
             formData.append("modoTrancript", jQuery("input[name='modoTrancript']:checked").val());
