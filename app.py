@@ -91,13 +91,14 @@ def subir_fichero():
         # Concatenar todos los archivos si se han subido todos
         if completed:
             print('\33[32m' + 'JUNTAR FICHERO' + '\033[0m')
+            logging.info('Fichero Juntado')
             uploaded_file = input_video_path / f"{dz_uuid}_{secure_filename(file.filename)}"
             with open(uploaded_file, "wb") as f:
                 for file_number in range(total_chunks):
                     f.write((save_dir / str(file_number)).read_bytes())
                 f.close()
             shutil.rmtree(save_dir)
-            logging.info(f"{file.filename} has been uploaded")
+            logging.info(f"{file.filename}" + messages.INFO_UPLOADED.value)
             input_file = uploaded_file
             try:
                 hour_ini = datetime.now()
