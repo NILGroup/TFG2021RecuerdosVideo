@@ -11,7 +11,7 @@ class messages(Enum):
     ERR_VALUES_FORMAT = "Los valores dados no están en el fromatoe sperado"
     ERR_FILE_NOT_PROVIDED = "No se ha dado un archivo"
     # ------------------------------ INFO --------------------------------------------
-    INFO_UPLOADED = "ha sido subido con éxito"
+    INFO_UPLOADED = " ha sido subido con éxito"
     INFO_STAGE_JUNTAR = "PROCESO JUNTAR FICHERO"
     INFO_STAGE_VIDEO2AUDIO = "PROCESO VIDEO A AUDIO"
     INFO_JUNTAR_SUCC = 'Fichero Juntado'

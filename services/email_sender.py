@@ -50,7 +50,7 @@ def send_email(to, transcript, summary, save_dir):
         server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
         server.login(sender_email, passw)
         server.sendmail(sender_email, to, message.as_string())
-        logging.log(messages.INFO_MAIL_SENT.value)
+        logging.info(messages.INFO_MAIL_SENT.value)
     
     except Exception as ex:
         logging.exception(ex)
