@@ -1,9 +1,7 @@
-def deserialize_transcript(array, salto):
+def deserialize_transcript(array):
     hablante = array[0]["speaker tag"]
     texto = str(hablante) + ": "
-    salto_char = ""
-    if salto:
-        salto_char = ".\n"
+    salto_char = ".\n"
     
     for elem in array:
         if hablante != elem["speaker tag"]:
