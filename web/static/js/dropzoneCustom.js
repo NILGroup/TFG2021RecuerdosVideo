@@ -27,8 +27,11 @@ Dropzone.options.dropper = {
 
         this.on('error', function(file, errorMessage, xhr){
             $(".dz-error-message").remove()
-            if (xhr.status === 504) {
+            if (xhr && xhr.status === 504) {
                 renderError("Las limitaciones técnicas del servidor provocaron un error por esperar demasiado una respuesta.")
+            }
+            else {
+                renderError(errorMessage)
             }
         })
 

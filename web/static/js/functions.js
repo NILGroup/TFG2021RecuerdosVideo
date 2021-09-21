@@ -17,6 +17,9 @@ function enableButton(id){
 }
 
 function renderError(errorMsg){
+  if($(".alert.alert-danger").length){
+    $(".alert.alert-danger").remove()
+  }
  $("<div class=\"alert alert-danger\"> " +
      "<h4 class=\"alert-heading\">Ha ocurrido un error</h4>" +
      "<p>"+ errorMsg + "</p>"+
