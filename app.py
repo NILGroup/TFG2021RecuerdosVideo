@@ -76,9 +76,8 @@ def subir_fichero():
             raise HTTPError(status = 400, body = f"Not all required fields supplied, missing {err}")
         except ValueError:
             raise HTTPError(status = 400, body = f"Values provided were not in expected format")
-        
-        # Create a new directory for this file in the chunks dir, using the UUID as the folder name
-        # Crea un nuevo directorio por este archivo
+
+        # Crea un nuevo directorio para este archivo  en el dir de los chunks, usando el UUID como nombre de carpeta
         save_dir = chunk_video_path / dz_uuid
         if not save_dir.exists():
             save_dir.mkdir(exist_ok = True, parents = True)
