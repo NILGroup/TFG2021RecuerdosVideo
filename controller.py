@@ -5,7 +5,7 @@ import model
 import audio_processor
 import services.cloud_storage as cloud_storage
 import services.speech_to_text_google as speech_to_text
-import services.speech_to_text_silences as s2t_dropSilence
+import services.speech_to_text_silences as speech_to_text_silence
 import services.email_sender as sm
 from constants.messages import messages
 from transcription_processor import deserialize_transcript
@@ -35,7 +35,7 @@ def process_audio(audio_path, transcriptMode, divide_by_speaker_option, divide_b
                 result_json_array = speech_to_text.transcribe(storage_uri)
                 transcript = deserialize_transcript(result_json_array, True)
             else:
-                transcript = s2t_dropSilence.transcribe(audio_path, chunks_audio_path / name)
+                transcript = speech_to_text_silence.transcribe(audio_path, chunks_audio_path / name)
             
             # Generar resumen
             summary = model.summarize(transcript.replace("\n", ""), diarize, divide_by_speaker_option, divide_by_segments_option, size_segments)

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
+
+import os
 
 from google.cloud import speech_v1p1beta1
+
 from resources import api_key
-import json
-import os
-from pydub import AudioSegment, effects, scipy_effects
 
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = api_key
@@ -38,11 +37,8 @@ Args:
     json_array = []
     
     for word_info in words_info:
-        data = { }
-        # start_time, end_time, confidence
+        data = {}
         data["word"] = word_info.word
         data["speaker tag"] = word_info.speaker_tag
-        # data["start_time"] = word_info.start_time
-        # data["end_time"] = word_info.end_time
         json_array.append(data)
     return json_array

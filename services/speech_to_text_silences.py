@@ -1,5 +1,4 @@
 # importing libraries
-import os
 import shutil
 
 import speech_recognition as sr

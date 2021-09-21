@@ -4,7 +4,7 @@ import logging
 
 from constants.paths import temp_path, chunk_video_path, input_video_path, normalized_audio_path, output_email_path, \
     chunks_audio_path
-from video2audio import v2a as video2audio
+from video_to_audio import v2a as video2audio
 from flask import Flask, render_template, request, make_response, jsonify
 from threading import Lock
 from collections import defaultdict
@@ -101,15 +101,15 @@ def subir_fichero():
             logging.info(f"{file.filename} has been uploaded")
             input_file = uploaded_file
             try:
-                hourIni = datetime.now()
-                print('\33[32m' + hourIni.strftime(formato) + ' START MAIN' + '\033[0m')
+                hour_ini = datetime.now()
+                print('\33[32m' + hour_ini.strftime(formato) + ' START MAIN' + '\033[0m')
                 audio_path = ""
                 audio_path = video2audio(input_file, normalized_audio_path)
                 result = controller.process_audio(audio_path, mode_trancript, divide_by_speaker, divide_by_segments,
                                                   size_segments, email)
                 
                 print('\33[32m' + datetime.now().strftime(formato) + ' FINISH MAIN' + '\033[0m')
-                print('\33[32m' + "Duracion --> " + str(datetime.now() - hourIni) + '\033[0m')
+                print('\33[32m' + "Duracion --> " + str(datetime.now() - hour_ini) + '\033[0m')
             
             finally:
                 if audio_path != "" and audio_path.exists():

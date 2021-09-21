@@ -65,8 +65,8 @@ Dropzone.options.dropper = {
             formData.append("email", jQuery("input[name='email']").val());
         });
 
-        this.on("uploadprogress", function(file, progress,bytesSent){
-            if(progress==100 && !$('#load-container').length){
+        this.on("uploadprogress", function(file, progress, bytesSent){
+            if(progress === 100 && !$('#load-container').length){
                  $("<div id='load-container'>" + "<div class=\"loader\"></div>" +
                      "<div class=\"alert alert-primary\">El proceso puede tardar varios minutos. Por favor, espere hasta que aparezcan los resultados.</div>\n"
                  +"</div>")
@@ -88,10 +88,9 @@ Dropzone.options.dropper = {
 
             var response = JSON.parse(file.xhr.response)
             document.getElementById("resultados").style.visibility = 'visible';
-            /*document.getElementById("submit-all").style.visibility = 'hidden';*/
+
             let error = "";
 
-            //console.log(document.cookie)
             //Se obtienen los resultados que han sido almacenados en cookies
             var ckTranscript = document.cookie.replace(/(?:(?:^|.*;\s*)ckTranscript\s*\=\s*([^;]*).*$)|^.*$/, "$1");
             var ckSummary = document.cookie.replace(/(?:(?:^|.*;\s*)ckSummary\s*\=\s*([^;]*).*$)|^.*$/, "$1");
