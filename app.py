@@ -68,7 +68,7 @@ def subir_fichero():
         if not file:
             raise HTTPError(status = 400, body = "No file provided")
         dz_uuid = request.form["dzuuid"]
-        # Chunked download
+        # Descarga con chunks
         try:
             current_chunk = int(request.form["dzchunkindex"])
             total_chunks = int(request.form["dztotalchunkcount"])
@@ -81,14 +81,14 @@ def subir_fichero():
         save_dir = chunk_video_path / dz_uuid
         if not save_dir.exists():
             save_dir.mkdir(exist_ok = True, parents = True)
-        # Save the individual chunk
+        # Guarda el chunk individual
         with open(save_dir / str(request.form["dzchunkindex"]), "wb") as f:
             file.save(f)
-        # See if we have all the chunks downloaded
+        # Ver si tenemos todos los chunks guardados
         with lock:
             chunks[dz_uuid].append(current_chunk)
             completed = len(chunks[dz_uuid]) == total_chunks
-        # Concat all the files into the final file when all are downloaded
+        # Concatenar todos los archivos si se han subido todos
         if completed:
             print('\33[32m' + 'JUNTAR FICHERO' + '\033[0m')
             uploaded_file = input_video_path / f"{dz_uuid}_{secure_filename(file.filename)}"

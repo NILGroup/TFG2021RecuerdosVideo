@@ -45,8 +45,8 @@ Dropzone.options.dropper = {
             }
         });
 
-        dzClosure = this; // Makes sure that 'this' is understood inside the functions below.
-        // for Dropzone to process the queue (instead of default form behavior):
+        dzClosure = this;
+
         document.getElementById("submit-all").addEventListener("click", function(e) {
 
             // Make sure that the form isn't actually being sent.
