@@ -36,12 +36,12 @@ def process_audio(audio_path, transcriptMode, divide_by_speaker_option, divide_b
                 transcript = speech_to_text_silence.transcribe(audio_path, chunks_audio_path / name)
             
             # Generar resumen
-            summary = model.summarize(transcript.replace("\n", ""), diarize, divide_by_speaker_option, divide_by_segments_option, size_segments)
+            summary = model.summarize(transcript, diarize, divide_by_speaker_option, divide_by_segments_option, size_segments)
             result = {"summary": summary, "transcript": transcript}
             
             # Enviar correo con resultados
             if email:
-                sm.send_email(email, transcript.replace(". ", ".\n"), summary, output_email_path / name)
+                sm.send_email(email, transcript, summary, output_email_path / name)
         
         except Exception as e:
             logging.error(messages.ERR_UNEXPECTED.value)

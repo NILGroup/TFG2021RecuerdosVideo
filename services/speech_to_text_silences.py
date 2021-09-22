@@ -47,7 +47,7 @@ def transcribe(source_file, save_dir):
             
             try:
                 rec = r.recognize_google(audio_listened, language = "es-ES")
-                transcripcion += rec[0].upper() + rec[1:] + ". "
+                transcripcion += rec[0].upper() + rec[1:] + ".\n"
             except sr.UnknownValueError:
                 logging.info(messages.AUDIO_NOT_UNDERSTAND.value + str(i))
             except sr.RequestError as e:

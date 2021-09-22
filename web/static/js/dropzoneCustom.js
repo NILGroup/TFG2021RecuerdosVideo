@@ -106,9 +106,9 @@ Dropzone.options.dropper = {
             }
 
             if(typeof response["transcript"] !== 'undefined') {
-                document.getElementById("transcript").innerHTML = response["transcript"].replaceAll(". ", ". \n");
+                document.getElementById("transcript").innerHTML = response["transcript"];
             }else if (ckTranscript !== 'undefined'){
-                document.getElementById("transcript").innerHTML = ckTranscript.replaceAll(". ", ". \n");
+                document.getElementById("transcript").innerHTML = ckTranscript;
             }else {
                 error += "<br>Hubo un problema al generar la transcripcion.";
             }
